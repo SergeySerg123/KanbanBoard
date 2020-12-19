@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace KanbanBoard.Api
 {
@@ -22,8 +23,13 @@ namespace KanbanBoard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GoalDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("GoalDBConnection")));
+            services.Configure<GoalstoreDatabaseSettings>(
+                Configuration.GetSection(nameof(GoalstoreDatabaseSettings)));
+
+            services.AddSingleton<IGoalstoreDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<GoalstoreDatabaseSettings>>().Value);
+
+
             services.AddTransient<IGoalsRepository, GoalsRepository>();
             services.AddControllers();
         }

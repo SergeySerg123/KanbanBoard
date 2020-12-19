@@ -1,5 +1,6 @@
 ﻿using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,36 +8,45 @@ namespace KanbanBoard.Api.Repositories
 {
     public class GoalsRepository : IGoalsRepository
     {
-        private readonly GoalDbContext _dbContext;
+        private readonly IMongoCollection<Goal> _goals;
 
-        public GoalsRepository(GoalDbContext dbContext)
+        public GoalsRepository(IGoalstoreDatabaseSettings settings)
         {
-            _dbContext = dbContext;
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+
+            _goals = database.GetCollection<Goal>(settings.GoalsCollectionName);
         }
 
-        public Task Create(Goal goal)
+        public async Task<IEnumerable<Goal>> GetAll(string authorId)
         {
-            throw new System.NotImplementedException();
+            var goals = await _goals
+                .Find(goal => goal.Author.Id == authorId).ToListAsync();
+            return goals;
         }
 
-        public Task Delete(string goalId)
+        public async Task<Goal> Get(string id)
         {
-            throw new System.NotImplementedException();
+            var goal = await _goals
+                .Find(goal => goal.Id == id)
+                .FirstOrDefaultAsync();
+
+            return goal;
         }
 
-        public Task<Goal> Get(string id)
+        public async Task Create(Goal goal)
         {
-            throw new System.NotImplementedException();
+            await _goals.InsertOneAsync(goal);
         }
 
-        public Task<IEnumerable<Goal>> GetAll(string authorId)
+        public async Task Update(Goal goal)
         {
-            throw new System.NotImplementedException();
+            await _goals.ReplaceOneAsync(g => g.Id == goal.Id, goal);
         }
 
-        public Task Update(Goal goal)
+        public async Task Delete(string goalId)
         {
-            throw new System.NotImplementedException();
-        }
+            await _goals.DeleteOneAsync(g => g.Id == goalId);
+        }  
     }
 }
