@@ -7,6 +7,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { MainBoardComponent } from './components/main-board/main-board.component';
 import { SubBoardComponent } from './components/sub-board/sub-board.component';
 import { CreateButtonComponent } from './components/create-button/create-button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialComponentsModule } from './components/common/material-components/material-components.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { CreateButtonComponent } from './components/create-button/create-button.
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
