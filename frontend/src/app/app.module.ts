@@ -9,6 +9,8 @@ import { SubBoardComponent } from './components/sub-board/sub-board.component';
 import { CreateButtonComponent } from './components/create-button/create-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialComponentsModule } from './components/common/material-components/material-components.module';
+import { BoardItemContainerComponent } from './components/board-item-container/board-item-container.component';
+import { BoardItemComponent } from './components/board-item/board-item.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { MaterialComponentsModule } from './components/common/material-component
     HeaderComponent,
     MainBoardComponent,
     SubBoardComponent,
-    CreateButtonComponent
+    CreateButtonComponent,
+    BoardItemContainerComponent,
+    BoardItemComponent
   ],
   imports: [
     BrowserModule,
