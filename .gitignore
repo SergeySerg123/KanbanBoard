@@ -7,9 +7,11 @@ yarn-error.log*
 lerna-debug.log*
 .vs
 
+
+
 backend/KanbanBoard.Api/appsettings.Development.json
 backend/KanbanBoard.Api/Obj
-backend/KanbanBoard.Api/Properties
+backend/KanbanBoard.Api/bin
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
