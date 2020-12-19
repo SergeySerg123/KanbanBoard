@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BoardItemContainerComponent } from './board-item-container.component';
+import { SubBoardHeaderComponent } from './sub-board-header.component';
 
-describe('BoardItemContainerComponent', () => {
-  let component: BoardItemContainerComponent;
-  let fixture: ComponentFixture<BoardItemContainerComponent>;
+describe('SubBoardHeaderComponent', () => {
+  let component: SubBoardHeaderComponent;
+  let fixture: ComponentFixture<SubBoardHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BoardItemContainerComponent ]
+      declarations: [ SubBoardHeaderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BoardItemContainerComponent);
+    fixture = TestBed.createComponent(SubBoardHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
