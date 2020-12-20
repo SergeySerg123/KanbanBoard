@@ -1,5 +1,6 @@
 ﻿using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
+using KanbanBoard.Api.Models.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,12 +28,12 @@ namespace KanbanBoard.Api.Services
             return goal;
         }
 
-        public async Task Create(Goal goal)
+        public async Task Create(GoalDTO goal)
         {
             await _goalsRepository.Create(goal);
         }
 
-        public async Task Update(Goal goal)
+        public async Task Update(GoalDTO goal)
         {
             await _goalsRepository.Update(goal);
         }
