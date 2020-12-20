@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
+using KanbanBoard.Api.Extensions;
+using KanbanBoard.Api.Models.DTO;
 using KanbanBoard.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,34 +19,43 @@ namespace KanbanBoard.Api.Controllers
 
         // GET: api/Goals
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var authorId = this.GetUserIdFromToken();
+            var goals = await _goalsService.GetAll(authorId);
+            return Ok(goals);
         }
 
         // GET: api/Goals/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
         {
-            return "value";
+            var goal = await _goalsService.Get(id);
+            return Ok(goal);
         }
 
         // POST: api/Goals
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] GoalDTO goal)
         {
+            await _goalsService.Create(goal);
+            return Ok();
         }
 
         // PUT: api/Goals/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromBody] GoalDTO goal)
         {
+            await _goalsService.Update(goal);
+            return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Goals/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
+            await _goalsService.Delete(id);
+            return NoContent();
         }
     }
 }
