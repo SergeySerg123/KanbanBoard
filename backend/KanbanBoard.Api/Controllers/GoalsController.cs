@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KanbanBoard.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KanbanBoard.Api.Controllers
@@ -7,6 +8,13 @@ namespace KanbanBoard.Api.Controllers
     [ApiController]
     public class GoalsController : ControllerBase
     {
+        private readonly GoalsService _goalsService;
+
+        public GoalsController(GoalsService goalsService)
+        {
+            _goalsService = goalsService;
+        }
+
         // GET: api/Goals
         [HttpGet]
         public IEnumerable<string> Get()
