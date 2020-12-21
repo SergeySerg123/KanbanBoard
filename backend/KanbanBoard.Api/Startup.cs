@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using KanbanBoard.Api.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KanbanBoard.Api
 {
@@ -28,10 +30,22 @@ namespace KanbanBoard.Api
 
             services.AddSingleton<IGoalstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<GoalstoreDatabaseSettings>>().Value);
-
+            
+            services.AddSingleton<GoalsService>();
 
             services.AddTransient<IGoalsRepository, GoalsRepository>();
             services.AddControllers();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://localhost:5001";
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +58,7 @@ namespace KanbanBoard.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
