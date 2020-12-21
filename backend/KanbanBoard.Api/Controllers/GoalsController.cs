@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using KanbanBoard.Api.Extensions;
-using KanbanBoard.Api.Models.DTO;
+using KanbanBoard.Api.Models;
 using KanbanBoard.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KanbanBoard.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class GoalsController : ControllerBase
     {
@@ -36,15 +38,16 @@ namespace KanbanBoard.Api.Controllers
 
         // POST: api/Goals
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] GoalDTO goal)
+        public async Task<IActionResult> Post([FromBody] Goal goal)
         {
-            await _goalsService.Create(goal);
+            var authorId = this.GetUserIdFromToken();
+            await _goalsService.Create(authorId, goal);
             return Ok();
         }
 
         // PUT: api/Goals/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] GoalDTO goal)
+        public async Task<IActionResult> Put([FromBody] Goal goal)
         {
             await _goalsService.Update(goal);
             return NoContent();
