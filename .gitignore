@@ -9,9 +9,8 @@ lerna-debug.log*
 
 
 
-backend/KanbanBoard.Api/appsettings.Development.json
-backend/KanbanBoard.Api/Obj
-backend/KanbanBoard.Api/bin
+**/Obj
+**/bin
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
