@@ -14,9 +14,9 @@ namespace KanbanBoard.Api.Services
             _goalsRepository = goalsRepository;
         }
 
-        public async Task<IEnumerable<Goal>> GetAll(string authorId)
+        public async Task<IEnumerable<Goal>> GetAll()
         {
-            var goals = await _goalsRepository.GetAll(authorId);
+            var goals = await _goalsRepository.GetAll();
             return goals;
         }
 
@@ -35,7 +35,7 @@ namespace KanbanBoard.Api.Services
                 Description = goal.Description,
                 //Author = authorId
             };
-            await _goalsRepository.Create(goal);
+            await _goalsRepository.Create(newGoal);
         }
 
         public async Task Update(Goal goal)
