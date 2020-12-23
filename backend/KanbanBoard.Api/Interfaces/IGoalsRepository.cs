@@ -6,7 +6,7 @@ namespace KanbanBoard.Api.Interfaces
 {
     public interface IGoalsRepository
     {
-        Task<IEnumerable<Goal>> GetAll(string authorId);
+        Task<IEnumerable<Goal>> GetAll();
         Task<Goal> Get(string id);
         Task Create(Goal goal);
         Task Update(Goal goal);
