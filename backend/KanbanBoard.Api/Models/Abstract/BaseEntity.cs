@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using System;
 
 namespace KanbanBoard.Api.Models.Abstract
@@ -13,9 +12,7 @@ namespace KanbanBoard.Api.Models.Abstract
             CreatedAt = UpdatedAt = DateTime.Now;
         }
 
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public DateTime CreatedAt
         {
             get => _createdAt;
