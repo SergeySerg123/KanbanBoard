@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace KanbanBoard.Api.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
     public class GoalsController : ControllerBase
     {
@@ -24,7 +23,7 @@ namespace KanbanBoard.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var authorId = this.GetUserIdFromToken();
-            var goals = await _goalsService.GetAll(authorId);
+            var goals = await _goalsService.GetAll();
             return Ok(goals);
         }
 
