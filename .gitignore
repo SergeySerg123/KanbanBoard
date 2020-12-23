@@ -11,6 +11,9 @@ lerna-debug.log*
 
 **/Obj
 **/bin
+bin*
+*/IdentityServer/tempkey.jwk
+./backend/KanbanBoard.Api/bin
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
