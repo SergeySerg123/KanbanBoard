@@ -1,5 +1,6 @@
 ﻿using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,17 +19,16 @@ namespace KanbanBoard.Api.Repositories
             _goals = database.GetCollection<Goal>(settings.GoalsCollectionName);
         }
 
-        public async Task<IEnumerable<Goal>> GetAll(string authorId)
+        public async Task<IEnumerable<Goal>> GetAll()
         {
-            var goals = await _goals
-                .Find(goal => goal.Author.Id == authorId).ToListAsync();
+            var goals = await _goals.Find(_ => true).ToListAsync();
             return goals;
         }
 
         public async Task<Goal> Get(string id)
         {
             var goal = await _goals
-                .Find(goal => goal.Id == id)
+                .Find(goal => goal.Id == new BsonObjectId(id))
                 .FirstOrDefaultAsync();
 
             return goal;
@@ -46,7 +46,7 @@ namespace KanbanBoard.Api.Repositories
 
         public async Task Delete(string goalId)
         {
-            await _goals.DeleteOneAsync(g => g.Id == goalId);
+            await _goals.DeleteOneAsync(g => g.Id == new BsonObjectId(goalId));
         }  
     }
 }
