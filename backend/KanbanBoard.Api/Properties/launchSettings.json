@@ -19,8 +19,8 @@
     },
     "KanbanBoard.Api": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "",
+      "launchBrowser": true,
+      "launchUrl": "api/goals",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
