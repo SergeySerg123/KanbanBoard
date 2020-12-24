@@ -25,7 +25,7 @@ namespace IdentityServer.JWT
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<AccessToken> GenerateAccessToken(int id, string userName, string email)
+        public async Task<AccessToken> GenerateAccessToken(string id, string userName, string email)
         {
             var identity = GenerateClaimsIdentity(id, userName);
 
@@ -72,17 +72,17 @@ namespace IdentityServer.JWT
             });
         }
 
-        public int GetUserIdFromToken(string accessToken, string signingKey)
+        public string GetUserIdFromToken(string accessToken, string signingKey)
         {
             var claimsPrincipal = GetPrincipalFromToken(accessToken, signingKey);
 
             // invalid token/signing key was passed and we can't extract user claims
             if (claimsPrincipal == null)
             {
-                throw new InvalidTokenException("access");
+                //throw new InvalidTokenException("access");
             }
 
-            return int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
+            return claimsPrincipal.Claims.First(c => c.Type == "id").Value;
         }
 
         private ClaimsPrincipal ValidateToken(string token, TokenValidationParameters tokenValidationParameters)
@@ -105,7 +105,7 @@ namespace IdentityServer.JWT
             }
         }
 
-        private static ClaimsIdentity GenerateClaimsIdentity(int id, string userName)
+        private static ClaimsIdentity GenerateClaimsIdentity(string id, string userName)
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
