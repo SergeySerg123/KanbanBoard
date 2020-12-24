@@ -1,5 +1,4 @@
-﻿using IdentityServer.Models;
-using KanbanBoard.Api.Models.Abstract;
+﻿using KanbanBoard.Api.Models.Abstract;
 using MongoDB.Bson;
 using System.Collections.Generic;
 
