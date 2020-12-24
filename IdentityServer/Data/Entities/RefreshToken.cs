@@ -16,7 +16,7 @@ namespace IdentityServer.Data.Entities
         public string Token { get; set; }
         public DateTime Expires { get; private set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         public bool IsActive => DateTime.UtcNow <= Expires;
