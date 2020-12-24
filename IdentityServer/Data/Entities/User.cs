@@ -1,10 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using IdentityServer.Data.Entities.Abstract;
 
 namespace IdentityServer.Entities
 {
-    public class User
+    public sealed class User : BaseEntity
     {
-        public ObjectId Id { get; set; }
+        
         public string URL { get; set; }
 
         public string Email { get; set; }
