@@ -9,6 +9,7 @@ namespace IdentityServer.Data
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
 
         public DbSet<RefreshToken> RefreshTokens { get; private set; }
+
         public DbSet<User> Users { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
