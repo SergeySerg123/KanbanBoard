@@ -1,15 +1,11 @@
-using KanbanBoard.Api.Interfaces;
-using KanbanBoard.Api.Models;
-using KanbanBoard.Api.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using KanbanBoard.Api.Services;
-using Microsoft.IdentityModel.Tokens;
+using KanbanBoard.Api.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using KanbanBoard.Api.Filters;
 
 namespace KanbanBoard.Api
 {
@@ -24,28 +20,21 @@ namespace KanbanBoard.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<GoalstoreDatabaseSettings>(
-                Configuration.GetSection(nameof(GoalstoreDatabaseSettings)));
-
-            services.AddSingleton<IGoalstoreDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<GoalstoreDatabaseSettings>>().Value);
+        {            
+            services.RegisterCustomServices(Configuration);
+            services.RegisterCustomRepositories();
             
-            services.AddSingleton<GoalsService>();
+            services.AddCors();
 
-            services.AddTransient<IGoalsRepository, GoalsRepository>();
-            services.AddControllers();
+            services
+                .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .AddAuthorization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                //.AddFluentValidation();
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-            {
-                options.Authority = "https://localhost:5001";
+            services.ConfigureCustomValidationErrors();
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false
-                };
-            });
+            services.ConfigureJwt(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,8 +45,14 @@ namespace KanbanBoard.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            app.UseCors(builder => builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders("Token-Expired")
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200"));
 
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
