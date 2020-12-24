@@ -12,7 +12,7 @@ namespace IdentityServer.Data.Entities.Abstract
             CreatedAt = UpdatedAt = DateTime.Now;
         }
 
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
         public DateTime CreatedAt
         {
             get => _createdAt;
