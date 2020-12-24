@@ -27,17 +27,16 @@ namespace IdentityServer.Services
         public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
         {
             var userEntity = await _context.Users
-                .Include(u => u.Avatar)
                 .FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
             if (userEntity == null)
             {
-                throw new NotFoundException(nameof(User));
+                //throw new NotFoundException(nameof(User));
             }
 
             if (!SecurityHelper.ValidatePassword(userDto.Password, userEntity.Password, userEntity.Salt))
             {
-                throw new InvalidUsernameOrPasswordException();
+                //throw new InvalidUsernameOrPasswordException();
             }
 
             var token = await GenerateAccessToken(userEntity.Id, userEntity.UserName, userEntity.Email);
@@ -50,7 +49,7 @@ namespace IdentityServer.Services
             };
         }
 
-        public async Task<AccessTokenDTO> GenerateAccessToken(int userId, string userName, string email)
+        public async Task<AccessTokenDTO> GenerateAccessToken(string userId, string userName, string email)
         {
             var refreshToken = _jwtFactory.GenerateRefreshToken();
 
@@ -74,19 +73,19 @@ namespace IdentityServer.Services
 
             if (userEntity == null)
             {
-                throw new NotFoundException(nameof(User), userId);
+                //throw new NotFoundException(nameof(User), userId);
             }
 
             var rToken = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == dto.RefreshToken && t.UserId == userId);
 
             if (rToken == null)
             {
-                throw new InvalidTokenException("refresh");
+                //throw new InvalidTokenException("refresh");
             }
 
             if (!rToken.IsActive)
             {
-                throw new ExpiredRefreshTokenException();
+                //throw new ExpiredRefreshTokenException();
             }
 
             var jwtToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName, userEntity.Email);
@@ -104,13 +103,13 @@ namespace IdentityServer.Services
             return new AccessTokenDTO(jwtToken, refreshToken);
         }
 
-        public async Task RevokeRefreshToken(string refreshToken, int userId)
+        public async Task RevokeRefreshToken(string refreshToken, string userId)
         {
             var rToken = _context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken && t.UserId == userId);
 
             if (rToken == null)
             {
-                throw new InvalidTokenException("refresh");
+                //throw new InvalidTokenException("refresh");
             }
 
             _context.RefreshTokens.Remove(rToken);
