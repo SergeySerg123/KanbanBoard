@@ -14,8 +14,7 @@ namespace IdentityServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RefreshToken>().Ignore(t => t.IsActive);
-        
+            modelBuilder.Entity<RefreshToken>().Ignore(t => t.IsActive);       
         }
     }
 }

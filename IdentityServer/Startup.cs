@@ -2,26 +2,37 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer.Data;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using IdentityServer.Services;
+using System.Reflection;
+using IdentityServer.JWT;
+using IdentityServer.Extensions;
 
 namespace IdentityServer
 {
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
 
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             // uncomment, if you want to add an MVC-based UI
-            //services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("UsersDBConnection")));
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -31,6 +42,18 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients);
+
+            services.AddAutoMapper(cfg =>
+            {
+                //cfg.AddProfile<CommentProfile>();
+            },
+            Assembly.GetExecutingAssembly());
+
+            services.ConfigureJwt(Configuration);
+
+            services.AddScoped<AuthService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<JwtFactory>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -45,16 +68,16 @@ namespace IdentityServer
 
             // uncomment if you want to add MVC
             //app.UseStaticFiles();
-            //app.UseRouting();
-            
+            app.UseRouting();
+
             app.UseIdentityServer();
 
             // uncomment, if you want to add MVC
             //app.UseAuthorization();
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapDefaultControllerRoute();
-            //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
