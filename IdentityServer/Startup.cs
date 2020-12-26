@@ -1,18 +1,10 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using IdentityServer.Data;
-using AutoMapper;
+﻿using IdentityServer.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using IdentityServer.Services;
-using System.Reflection;
-using IdentityServer.JWT;
 using IdentityServer.Extensions;
 
 namespace IdentityServer
@@ -43,20 +35,12 @@ namespace IdentityServer
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients);
 
-            services.AddAutoMapper(cfg =>
-            {
-                //cfg.AddProfile<CommentProfile>();
-            },
-            Assembly.GetExecutingAssembly());
-
             services.ConfigureJwt(Configuration);
-
-            services.AddScoped<AuthService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<JwtFactory>();
+            services.RegisterMappingProfiles();
+            services.RegisterCustomServices();
 
             // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            //builder.AddDeveloperSigningCredential();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -69,6 +53,8 @@ namespace IdentityServer
             // uncomment if you want to add MVC
             //app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseIdentityServer();
 

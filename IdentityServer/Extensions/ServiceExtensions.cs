@@ -1,4 +1,7 @@
-﻿using IdentityServer.JWT;
+﻿using AutoMapper;
+using IdentityServer.JWT;
+using IdentityServer.MappingProfiles;
+using IdentityServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -79,8 +83,23 @@ namespace IdentityServer.Extensions
                         return Task.CompletedTask;
                     }
                 };
-            });
+            }); 
+        }
 
+        public static void RegisterCustomServices(this IServiceCollection services)
+        {
+            services.AddScoped<AuthService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<JwtFactory>();
+        }
+
+        public static void RegisterMappingProfiles(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<UserProfile>();
+            },
+            Assembly.GetExecutingAssembly());
         }
     }
 }

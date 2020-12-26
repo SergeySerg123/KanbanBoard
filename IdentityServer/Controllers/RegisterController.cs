@@ -34,6 +34,5 @@ namespace IdentityServer.Controllers
 
             return CreatedAtAction("GetById", "users", new { id = createdUser.Id }, result);
         }
-
     }
 }
