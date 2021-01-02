@@ -41,7 +41,8 @@ namespace KanbanBoard.Api.Controllers
         public async Task<IActionResult> Post([FromBody] GoalDTO goalDto)
         {
             var authorId = this.GetUserIdFromToken();
-            await _goalsService.Create(authorId, goalDto);
+            goalDto.AuthorId = authorId;
+            await _goalsService.Create(goalDto);
             return Ok();
         }
 
