@@ -6,8 +6,6 @@ using Microsoft.Extensions.Hosting;
 using KanbanBoard.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using KanbanBoard.Api.Filters;
-using EventBus.RabbitMQ.Standard.Configuration;
-using EventBus.RabbitMQ.Standard.Options;
 
 namespace KanbanBoard.Api
 {
@@ -25,11 +23,9 @@ namespace KanbanBoard.Api
         {            
             services.RegisterCustomServices(Configuration);
             services.RegisterCustomRepositories();
-
-            var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
-
-            services.AddRabbitMqConnection(rabbitMqOptions);
-            services.AddRabbitMqRegistration(rabbitMqOptions);
+            services.RegisterMappingProfiles();
+            services.RegisterRabbitMQ(Configuration);
+            
 
             services.AddCors();
 
