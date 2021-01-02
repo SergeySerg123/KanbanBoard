@@ -1,4 +1,5 @@
-﻿using EventBus.Base.Standard;
+﻿using AutoMapper;
+using EventBus.Base.Standard;
 using KanbanBoard.Api.DTO;
 using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
@@ -10,11 +11,13 @@ namespace KanbanBoard.Api.Services
 {
     public class GoalsService
     {
-        private readonly IGoalsRepository _goalsRepository;
+        private readonly IMapper _mapper;
         private readonly IEventBus _eventBus;
-
-        public GoalsService(IEventBus eventBus, IGoalsRepository goalsRepository)
+        private readonly IGoalsRepository _goalsRepository;
+       
+        public GoalsService(IMapper mapper, IEventBus eventBus, IGoalsRepository goalsRepository)
         {
+            _mapper = mapper;
             _eventBus = eventBus;
             _goalsRepository = goalsRepository;
         }
@@ -32,22 +35,25 @@ namespace KanbanBoard.Api.Services
             return goal;
         }
 
-        public async Task Create(string authorId, GoalDTO goalDto)
+        public async Task Create(GoalDTO goalDto)
         {
+            var goal = _mapper.Map<Goal>(goalDto);
             var newGoal = new Goal
             {
                 Name = goal.Name,
                 Description = goal.Description,
-                //Author = authorId
+                AuthorId = goal.AuthorId,
+                BoardId = goal.BoardId
             };
             await _goalsRepository.Create(newGoal);
             
-            var message = new CreatedGoalIntegrationEvent(newGoal.Name, newGoal.Description, authorId, "sergey_chizhik@ukr.net");
+            var message = new CreatedGoalIntegrationEvent(newGoal.Name, newGoal.Description, newGoal.AuthorId.ToString(), "sergey_chizhik@ukr.net");
             _eventBus.Publish(message);
         }
 
         public async Task Update(GoalDTO goalDto)
         {
+            var goal = _mapper.Map<Goal>(goalDto);
             await _goalsRepository.Update(goal);
         }
 
