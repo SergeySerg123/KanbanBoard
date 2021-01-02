@@ -6,16 +6,9 @@ namespace KanbanBoard.Api.Models
 {
     public class Goal : BaseEntity
     {
-        [JsonProperty("name")]
         public string Name { get; set; }
-        
-        [JsonProperty("description")]
         public string Description { get; set; }
-
-        //[JsonProperty]
-        //public ObjectId BoardId { get; set; }
-
-        //[JsonIgnore]
-        //public ObjectId Author { get; set; }
+        public ObjectId BoardId { get; set; }
+        public ObjectId AuthorId { get; set; }
     }
 }

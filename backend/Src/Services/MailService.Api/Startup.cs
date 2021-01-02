@@ -1,13 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EventBus.Base.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Options;
+using MailService.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using KanbanBoard.Api.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using KanbanBoard.Api.Filters;
+using Microsoft.Extensions.Logging;
 
-namespace KanbanBoard.Api
+namespace MailService.Api
 {
     public class Startup
     {
@@ -20,21 +27,14 @@ namespace KanbanBoard.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
-            services.RegisterCustomServices(Configuration);
-            services.RegisterCustomRepositories();
-            
-            services.AddCors();
+        {
+            var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
 
-            services
-                .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .AddAuthorization()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-                //.AddFluentValidation();
+            services.AddRabbitMqConnection(rabbitMqOptions);
+            services.AddRabbitMqRegistration(rabbitMqOptions);
+            services.AddEventBusHandling(EventBusExtension.GetHandlers());
 
-            services.ConfigureCustomValidationErrors();
-
-            services.ConfigureJwt(Configuration);
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,15 +45,8 @@ namespace KanbanBoard.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithExposedHeaders("Token-Expired")
-                .AllowCredentials()
-                .WithOrigins("http://localhost:4200"));
-
             app.UseRouting();
-            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
