@@ -1,5 +1,8 @@
-﻿using KanbanBoard.Api.Interfaces;
+﻿using EventBus.Base.Standard;
+using KanbanBoard.Api.DTO;
+using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
+using KanbanBoard.Services.Goals.Api.IntegrationEvents.Events;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,9 +11,11 @@ namespace KanbanBoard.Api.Services
     public class GoalsService
     {
         private readonly IGoalsRepository _goalsRepository;
+        private readonly IEventBus _eventBus;
 
-        public GoalsService(IGoalsRepository goalsRepository)
+        public GoalsService(IEventBus eventBus, IGoalsRepository goalsRepository)
         {
+            _eventBus = eventBus;
             _goalsRepository = goalsRepository;
         }
 
@@ -27,7 +32,7 @@ namespace KanbanBoard.Api.Services
             return goal;
         }
 
-        public async Task Create(string authorId, Goal goal)
+        public async Task Create(string authorId, GoalDTO goalDto)
         {
             var newGoal = new Goal
             {
@@ -36,9 +41,12 @@ namespace KanbanBoard.Api.Services
                 //Author = authorId
             };
             await _goalsRepository.Create(newGoal);
+            
+            var message = new CreatedGoalIntegrationEvent(newGoal.Name, newGoal.Description, authorId, "sergey_chizhik@ukr.net");
+            _eventBus.Publish(message);
         }
 
-        public async Task Update(Goal goal)
+        public async Task Update(GoalDTO goalDto)
         {
             await _goalsRepository.Update(goal);
         }
