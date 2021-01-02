@@ -1,8 +1,12 @@
-﻿using IdentityServer.JWT;
+﻿using AutoMapper;
+using EventBus.RabbitMQ.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Options;
+using IdentityServer.JWT;
 using KanbanBoard.Api.Interfaces;
 using KanbanBoard.Api.Models;
 using KanbanBoard.Api.Repositories;
 using KanbanBoard.Api.Services;
+using KanbanBoard.Services.Goals.Api.MappingProfiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +40,23 @@ namespace KanbanBoard.Api.Extensions
         public static void RegisterCustomRepositories(this IServiceCollection services)
         {
             services.AddTransient<IGoalsRepository, GoalsRepository>();
+        }
+
+        public static void RegisterMappingProfiles(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<GoalProfile>();
+            },
+            Assembly.GetExecutingAssembly());
+        }
+
+        public static void RegisterRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        {
+            var rabbitMqOptions = configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
+
+            services.AddRabbitMqConnection(rabbitMqOptions);
+            services.AddRabbitMqRegistration(rabbitMqOptions);
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
