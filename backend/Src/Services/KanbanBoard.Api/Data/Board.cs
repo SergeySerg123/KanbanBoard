@@ -1,8 +1,8 @@
-﻿using KanbanBoard.Api.Models.Abstract;
+﻿using KanbanBoard.Services.Goals.Api.Models.Abstract;
 using MongoDB.Bson;
 using System.Collections.Generic;
 
-namespace KanbanBoard.Api.Models
+namespace KanbanBoard.Services.Goals.Api.Models
 {
     public class Board : BaseEntity
     {

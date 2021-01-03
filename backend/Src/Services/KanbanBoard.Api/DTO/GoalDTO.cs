@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace KanbanBoard.Api.DTO
+namespace KanbanBoard.Services.Goals.Api.DTO
 {
     public sealed class GoalDTO
     {

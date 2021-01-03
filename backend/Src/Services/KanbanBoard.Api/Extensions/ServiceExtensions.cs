@@ -1,18 +1,19 @@
 ﻿using AutoMapper;
-using EventBus.RabbitMQ.Standard.Configuration;
-using EventBus.RabbitMQ.Standard.Options;
 using IdentityServer.JWT;
-using KanbanBoard.Api.Interfaces;
-using KanbanBoard.Api.Models;
-using KanbanBoard.Api.Repositories;
-using KanbanBoard.Api.Services;
+using KanbanBoard.Services.Goals.Api.Interfaces;
+using KanbanBoard.Services.Goals.Api.Models;
+using KanbanBoard.Services.Goals.Api.Repositories;
+using KanbanBoard.Services.Goals.Api.Services;
+using KanbanBoard.BuildingBlocks.EventBus.RabbitMQEventBus;
 using KanbanBoard.Services.Goals.Api.MappingProfiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -51,12 +52,15 @@ namespace KanbanBoard.Api.Extensions
             Assembly.GetExecutingAssembly());
         }
 
-        public static void RegisterRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        public static void AddRabbit(this IServiceCollection services, IConfiguration configuration)
         {
-            var rabbitMqOptions = configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
+            var rabbitConfig = configuration.GetSection("rabbit");
+            services.Configure<RabbitOptions>(rabbitConfig);
 
-            services.AddRabbitMqConnection(rabbitMqOptions);
-            services.AddRabbitMqRegistration(rabbitMqOptions);
+            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+            services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
+
+            services.AddSingleton<IRabbitManager, RabbitManager>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

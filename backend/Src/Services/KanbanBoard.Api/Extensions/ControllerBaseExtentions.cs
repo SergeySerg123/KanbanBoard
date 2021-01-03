@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace KanbanBoard.Api.Extensions
+namespace KanbanBoard.Services.Goals.Api.Extensions
 {
     public static class ControllerBaseExtensions
     {

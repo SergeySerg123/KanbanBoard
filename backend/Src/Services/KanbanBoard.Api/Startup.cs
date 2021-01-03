@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using KanbanBoard.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using KanbanBoard.Api.Filters;
+using KanbanBoard.Services.Goals.Api.Filters;
 
-namespace KanbanBoard.Api
+namespace KanbanBoard.Services.Goals.Api
 {
     public class Startup
     {
@@ -20,11 +20,12 @@ namespace KanbanBoard.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            services.AddRabbit(Configuration);
             services.RegisterCustomServices(Configuration);
             services.RegisterCustomRepositories();
             services.RegisterMappingProfiles();
-            services.RegisterRabbitMQ(Configuration);
+            
             
 
             services.AddCors();
@@ -56,8 +57,9 @@ namespace KanbanBoard.Api
                 .WithOrigins("http://localhost:4200"));
 
             app.UseRouting();
-            app.UseAuthentication();
+            
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,24 +1,25 @@
 ﻿using AutoMapper;
 using EventBus.Base.Standard;
-using KanbanBoard.Api.DTO;
-using KanbanBoard.Api.Interfaces;
-using KanbanBoard.Api.Models;
+using KanbanBoard.Services.Goals.Api.DTO;
+using KanbanBoard.Services.Goals.Api.Interfaces;
+using KanbanBoard.Services.Goals.Api.Models;
 using KanbanBoard.Services.Goals.Api.IntegrationEvents.Events;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using KanbanBoard.BuildingBlocks.EventBus.RabbitMQEventBus;
 
-namespace KanbanBoard.Api.Services
+namespace KanbanBoard.Services.Goals.Api.Services
 {
     public class GoalsService
     {
         private readonly IMapper _mapper;
-        private readonly IEventBus _eventBus;
+        private readonly IRabbitManager _manager;
         private readonly IGoalsRepository _goalsRepository;
        
-        public GoalsService(IMapper mapper, IEventBus eventBus, IGoalsRepository goalsRepository)
+        public GoalsService(IMapper mapper, IRabbitManager manager, IGoalsRepository goalsRepository)
         {
             _mapper = mapper;
-            _eventBus = eventBus;
+            _manager = manager;
             _goalsRepository = goalsRepository;
         }
 
@@ -48,7 +49,7 @@ namespace KanbanBoard.Api.Services
             await _goalsRepository.Create(newGoal);
             
             var message = new CreatedGoalIntegrationEvent(newGoal.Name, newGoal.Description, newGoal.AuthorId.ToString(), "sergey_chizhik@ukr.net");
-            _eventBus.Publish(message);
+            _manager.Publish(message, "goals.exchange", "direct", "");
         }
 
         public async Task Update(GoalDTO goalDto)

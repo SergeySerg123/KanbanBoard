@@ -1,4 +1,4 @@
-﻿namespace KanbanBoard.Api.Interfaces
+﻿namespace KanbanBoard.Services.Goals.Api.Interfaces
 {
     public interface IGoalstoreDatabaseSettings
     {

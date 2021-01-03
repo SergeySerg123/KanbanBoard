@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using System;
 
-namespace KanbanBoard.Api.Models.Abstract
+namespace KanbanBoard.Services.Goals.Api.Models.Abstract
 {
     public abstract class BaseEntity
     {

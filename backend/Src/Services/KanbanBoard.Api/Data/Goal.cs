@@ -1,8 +1,7 @@
-﻿using KanbanBoard.Api.Models.Abstract;
+﻿using KanbanBoard.Services.Goals.Api.Models.Abstract;
 using MongoDB.Bson;
-using Newtonsoft.Json;
 
-namespace KanbanBoard.Api.Models
+namespace KanbanBoard.Services.Goals.Api.Models
 {
     public class Goal : BaseEntity
     {

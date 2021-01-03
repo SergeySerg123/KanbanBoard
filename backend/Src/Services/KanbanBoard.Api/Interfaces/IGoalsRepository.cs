@@ -1,8 +1,8 @@
-﻿using KanbanBoard.Api.Models;
+﻿using KanbanBoard.Services.Goals.Api.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace KanbanBoard.Api.Interfaces
+namespace KanbanBoard.Services.Goals.Api.Interfaces
 {
     public interface IGoalsRepository
     {

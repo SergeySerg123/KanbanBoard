@@ -1,15 +1,14 @@
 ﻿using System.Threading.Tasks;
-using KanbanBoard.Api.DTO;
-using KanbanBoard.Api.Extensions;
-using KanbanBoard.Api.Services;
-using Microsoft.AspNetCore.Authorization;
+using KanbanBoard.Services.Goals.Api.DTO;
+using KanbanBoard.Services.Goals.Api.Extensions;
+using KanbanBoard.Services.Goals.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KanbanBoard.Api.Controllers
+namespace KanbanBoard.Services.Goals.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class GoalsController : ControllerBase
     {
         private readonly GoalsService _goalsService;

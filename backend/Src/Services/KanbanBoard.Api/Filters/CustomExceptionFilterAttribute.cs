@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using KanbanBoard.Api.Extensions;
+using KanbanBoard.Services.Goals.Api.Extensions;
 
-namespace KanbanBoard.Api.Filters
+namespace KanbanBoard.Services.Goals.Api.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute

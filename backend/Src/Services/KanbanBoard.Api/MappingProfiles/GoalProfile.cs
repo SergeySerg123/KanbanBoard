@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using KanbanBoard.Api.DTO;
-using KanbanBoard.Api.Models;
+using KanbanBoard.Services.Goals.Api.DTO;
+using KanbanBoard.Services.Goals.Api.Models;
 using MongoDB.Bson;
 
 namespace KanbanBoard.Services.Goals.Api.MappingProfiles

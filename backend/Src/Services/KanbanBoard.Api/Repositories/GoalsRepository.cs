@@ -1,11 +1,11 @@
-﻿using KanbanBoard.Api.Interfaces;
-using KanbanBoard.Api.Models;
+﻿using KanbanBoard.Services.Goals.Api.Interfaces;
+using KanbanBoard.Services.Goals.Api.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace KanbanBoard.Api.Repositories
+namespace KanbanBoard.Services.Goals.Api.Repositories
 {
     public class GoalsRepository : IGoalsRepository
     {

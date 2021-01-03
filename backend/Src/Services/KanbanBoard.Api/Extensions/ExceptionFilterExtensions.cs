@@ -1,8 +1,8 @@
-﻿using KanbanBoard.Api.Exceptions;
+﻿using KanbanBoard.Services.Goals.Api.Exceptions;
 using System;
 using System.Net;
 
-namespace KanbanBoard.Api.Extensions
+namespace KanbanBoard.Services.Goals.Api.Extensions
 {
     public static class ExceptionFilterExtensions
     {

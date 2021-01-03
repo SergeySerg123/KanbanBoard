@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KanbanBoard.Api.Exceptions
+namespace KanbanBoard.Services.Goals.Api.Exceptions
 {
     public class InvalidPasswordResetTokenException : Exception
     {

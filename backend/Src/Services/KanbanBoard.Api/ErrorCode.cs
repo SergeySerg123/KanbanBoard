@@ -1,4 +1,4 @@
-﻿namespace KanbanBoard.Api
+﻿namespace KanbanBoard.Services.Goals.Api
 {
     public enum ErrorCode
     {

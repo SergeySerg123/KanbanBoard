@@ -1,6 +1,6 @@
-﻿using KanbanBoard.Api.Interfaces;
+﻿using KanbanBoard.Services.Goals.Api.Interfaces;
 
-namespace KanbanBoard.Api.Models
+namespace KanbanBoard.Services.Goals.Api.Models
 {
     public class GoalstoreDatabaseSettings : IGoalstoreDatabaseSettings
     {
