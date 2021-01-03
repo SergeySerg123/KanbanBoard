@@ -1,7 +1,4 @@
-using EventBus.Base.Standard.Configuration;
-using EventBus.RabbitMQ.Standard.Configuration;
-using EventBus.RabbitMQ.Standard.Options;
-using MailService.Api.Extensions;
+using KanbanBoard.Services.MailService.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,11 +19,7 @@ namespace KanbanBoard.Services.MailService.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var rabbitMqOptions = Configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
-
-            services.AddRabbitMqConnection(rabbitMqOptions);
-            services.AddRabbitMqRegistration(rabbitMqOptions);
-            services.AddEventBusHandling(EventBusExtension.GetHandlers());
+            services.AddRabbit(Configuration);
 
             services.AddControllers();
         }
