@@ -1,8 +1,8 @@
 ﻿using EventBus.Base.Standard;
-using MailService.Api.IntegrationEvents.Events;
+using KanbanBoard.Services.MailService.Api.IntegrationEvents.Events;
 using System.Threading.Tasks;
 
-namespace MailService.Api.IntegrationEvents.EventHandling
+namespace KanbanBoard.Services.MailService.Api.IntegrationEvents.EventHandling
 {
     public class CreatedGoalIntegrationEventHandler 
         : IIntegrationEventHandler<CreatedGoalIntegrationEvent>

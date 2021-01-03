@@ -1,7 +1,7 @@
 ﻿using EventBus.Base.Standard;
 
 
-namespace MailService.Api.IntegrationEvents.Events
+namespace KanbanBoard.Services.MailService.Api.IntegrationEvents.Events
 {
     public class CreatedGoalIntegrationEvent : IntegrationEvent
     {
