@@ -3,7 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace IdentityServer.Helpers
+namespace KanbanBoard.Services.IdentityServer.Helpers
 {
     public static class SecurityHelper
     {

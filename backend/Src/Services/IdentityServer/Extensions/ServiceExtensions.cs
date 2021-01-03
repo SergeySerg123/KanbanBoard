@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using IdentityServer.JWT;
-using IdentityServer.MappingProfiles;
-using IdentityServer.Services;
+using KanbanBoard.Services.IdentityServer.JWT;
+using KanbanBoard.Services.IdentityServer.MappingProfiles;
+using KanbanBoard.Services.IdentityServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdentityServer.Extensions
+namespace KanbanBoard.Services.IdentityServer.Extensions
 {
     public static class ServiceExtensions
     {

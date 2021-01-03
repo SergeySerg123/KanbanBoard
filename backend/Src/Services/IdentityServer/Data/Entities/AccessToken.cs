@@ -1,10 +1,6 @@
-﻿using IdentityServer.Data.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KanbanBoard.Services.IdentityServer.Data.Entities.Abstract;
 
-namespace IdentityServer.Entities
+namespace KanbanBoard.Services.IdentityServer.Entities
 {
     public sealed class AccessToken : BaseEntity
     {

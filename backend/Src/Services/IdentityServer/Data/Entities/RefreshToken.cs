@@ -1,8 +1,8 @@
-﻿using IdentityServer.Data.Entities.Abstract;
-using IdentityServer.Entities;
+﻿using KanbanBoard.Services.IdentityServer.Data.Entities.Abstract;
+using KanbanBoard.Services.IdentityServer.Entities;
 using System;
 
-namespace IdentityServer.Data.Entities
+namespace KanbanBoard.Services.IdentityServer.Data.Entities
 {
     public sealed class RefreshToken : BaseEntity
     {

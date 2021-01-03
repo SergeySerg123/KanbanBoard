@@ -1,13 +1,13 @@
-﻿using IdentityServer.Data;
+﻿using KanbanBoard.Services.IdentityServer.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using IdentityServer.Extensions;
+using KanbanBoard.Services.IdentityServer.Extensions;
 
-namespace IdentityServer
+namespace KanbanBoard.Services.IdentityServer
 {
     public class Startup
     {

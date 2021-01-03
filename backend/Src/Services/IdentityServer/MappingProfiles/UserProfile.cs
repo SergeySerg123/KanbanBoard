@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using IdentityServer.DTO.User;
-using IdentityServer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using KanbanBoard.Services.IdentityServer.DTO.User;
+using KanbanBoard.Services.IdentityServer.Entities;
 
-namespace IdentityServer.MappingProfiles
+namespace KanbanBoard.Services.IdentityServer.MappingProfiles
 {
     public sealed class UserProfile : Profile
     {

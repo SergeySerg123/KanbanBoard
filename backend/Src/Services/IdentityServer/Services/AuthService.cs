@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using IdentityServer.Data;
-using IdentityServer.Data.Entities;
-using IdentityServer.DTO.Auth;
-using IdentityServer.DTO.User;
-using IdentityServer.Helpers;
-using IdentityServer.JWT;
+using KanbanBoard.Services.IdentityServer.Data;
+using KanbanBoard.Services.IdentityServer.Data.Entities;
+using KanbanBoard.Services.IdentityServer.DTO.Auth;
+using KanbanBoard.Services.IdentityServer.DTO.User;
+using KanbanBoard.Services.IdentityServer.Helpers;
+using KanbanBoard.Services.IdentityServer.JWT;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServer.Services
+namespace KanbanBoard.Services.IdentityServer.Services
 {
     public sealed class AuthService
     {

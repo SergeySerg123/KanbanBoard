@@ -1,6 +1,6 @@
-﻿using IdentityServer.Entities;
+﻿using KanbanBoard.Services.IdentityServer.Entities;
 
-namespace IdentityServer.DTO.Auth
+namespace KanbanBoard.Services.IdentityServer.DTO.Auth
 {
     public sealed class AccessTokenDTO
     {

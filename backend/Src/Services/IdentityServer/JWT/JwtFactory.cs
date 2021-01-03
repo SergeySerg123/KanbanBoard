@@ -1,5 +1,5 @@
-﻿using IdentityServer.Helpers;
-using IdentityServer.Entities;
+﻿using KanbanBoard.Services.IdentityServer.Helpers;
+using KanbanBoard.Services.IdentityServer.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,7 +10,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdentityServer.JWT
+namespace KanbanBoard.Services.IdentityServer.JWT
 {
     public sealed class JwtFactory
     {

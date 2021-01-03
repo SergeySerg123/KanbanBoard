@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using IdentityServer.DTO.User;
-using IdentityServer.Services;
+using KanbanBoard.Services.IdentityServer.DTO.User;
+using KanbanBoard.Services.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer.Controllers
+namespace KanbanBoard.Services.IdentityServer.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]

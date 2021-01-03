@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace IdentityServer.Data.Migrations
+namespace KanbanBoard.Services.IdentityServer.Data.Migrations
 {
     public partial class Initial : Migration
     {

@@ -1,7 +1,7 @@
 ﻿using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace IdentityServer
+namespace KanbanBoard.Services.IdentityServer
 {
     public static class Config
     {
@@ -14,7 +14,7 @@ namespace IdentityServer
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("Kanban.Api", "Kanban.Api v1")
+                new ApiScope("Goals.Api", "Goals.Api v1")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -34,7 +34,7 @@ namespace IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "Kanban.Api" }
+                    AllowedScopes = { "Goals.Api" }
                 }
             };
     }

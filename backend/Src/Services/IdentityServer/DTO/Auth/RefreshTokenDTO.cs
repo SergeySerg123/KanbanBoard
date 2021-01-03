@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace IdentityServer.DTO.Auth
+namespace KanbanBoard.Services.IdentityServer.DTO.Auth
 {
     public sealed class RefreshTokenDTO
     {

@@ -1,8 +1,8 @@
-﻿using IdentityServer.Data.Entities;
-using IdentityServer.Entities;
+﻿using KanbanBoard.Services.IdentityServer.Data.Entities;
+using KanbanBoard.Services.IdentityServer.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityServer.Data
+namespace KanbanBoard.Services.IdentityServer.Data
 {
     public class IdentityContext : DbContext
     {

@@ -1,6 +1,6 @@
-﻿using IdentityServer.Data.Entities.Abstract;
+﻿using KanbanBoard.Services.IdentityServer.Data.Entities.Abstract;
 
-namespace IdentityServer.Entities
+namespace KanbanBoard.Services.IdentityServer.Entities
 {
     public sealed class User : BaseEntity
     {

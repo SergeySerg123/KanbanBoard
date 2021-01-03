@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using IdentityServer.Data;
-using IdentityServer.DTO.User;
-using IdentityServer.Entities;
-using IdentityServer.Helpers;
+using KanbanBoard.Services.IdentityServer.Data;
+using KanbanBoard.Services.IdentityServer.DTO.User;
+using KanbanBoard.Services.IdentityServer.Entities;
+using KanbanBoard.Services.IdentityServer.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IdentityServer.Services
+namespace KanbanBoard.Services.IdentityServer.Services
 {
     public class UserService
     {

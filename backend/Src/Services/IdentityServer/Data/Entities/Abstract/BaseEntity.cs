@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using System;
 
-namespace IdentityServer.Data.Entities.Abstract
+namespace KanbanBoard.Services.IdentityServer.Data.Entities.Abstract
 {
     public abstract class BaseEntity
     {
