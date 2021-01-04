@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using IdentityServer.JWT;
 using KanbanBoard.Services.Goals.Api.Interfaces;
 using KanbanBoard.Services.Goals.Api.Models;
 using KanbanBoard.Services.Goals.Api.Repositories;
@@ -10,17 +9,21 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using RabbitMQ.Client;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using KanbanBoard.Services.IdentityServer.JWT;
+using KanbanBoard.BuildingBlocks.EventBus.Settings.Abstractions;
+using Autofac;
+using Microsoft.Extensions.Logging;
+using KanbanBoard.BuildingBlocks.EventBus.Settings;
+using RabbitMQ.Client;
 
-namespace KanbanBoard.Api.Extensions
+namespace KanbanBoard.Services.Goals.Api.Extensions
 {
     public static class ServiceExtensions
     {
@@ -52,18 +55,68 @@ namespace KanbanBoard.Api.Extensions
             Assembly.GetExecutingAssembly());
         }
 
-        public static void AddRabbit(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterRabbitMQEventBus(this IServiceCollection services, IConfiguration Configuration)
         {
-            var rabbitConfig = configuration.GetSection("rabbit");
-            services.Configure<RabbitOptions>(rabbitConfig);
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
-            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-            services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"],
+                    DispatchConsumersAsync = true
+                };
 
-            services.AddSingleton<IRabbitManager, RabbitManager>();
+                if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                {
+                    factory.UserName = Configuration["EventBusUserName"];
+                }
+
+                if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                {
+                    factory.Password = Configuration["EventBusPassword"];
+                }
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                {
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+            });
+
+            var subscriptionClientName = Configuration["SubscriptionClientName"];
+  
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                {
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
+
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+            });
         }
 
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+            //public static void AddRabbit(this IServiceCollection services, IConfiguration configuration)
+            //{
+            //    var rabbitConfig = configuration.GetSection("rabbit");
+            //    services.Configure<RabbitOptions>(rabbitConfig);
+
+            //    services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+            //    services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
+
+            //    services.AddSingleton<IRabbitManager, RabbitManager>();
+            //}
+
+            public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var secretKey = configuration["SecretJWTKey"]; // get value from system environment
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));

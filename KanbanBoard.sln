@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailService.Api", "backend\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{B773BA7F-2253-49CC-AD2C-549F2DAAF142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQEventBus", "backend\Src\BuildingBlocks\EventBus\RabbitMQEventBus\RabbitMQEventBus.csproj", "{E77B7779-B001-4CAD-8BB3-33E7EA5E7405}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQEventBus", "backend\Src\BuildingBlocks\EventBus\RabbitMQEventBus\RabbitMQEventBus.csproj", "{E77B7779-B001-4CAD-8BB3-33E7EA5E7405}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Settings", "backend\Src\BuildingBlocks\EventBus\EventBus.Settings\EventBus.Settings.csproj", "{0107BFCC-4427-498B-AFE6-3B61CEAB5974}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{E77B7779-B001-4CAD-8BB3-33E7EA5E7405}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E77B7779-B001-4CAD-8BB3-33E7EA5E7405}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E77B7779-B001-4CAD-8BB3-33E7EA5E7405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0107BFCC-4427-498B-AFE6-3B61CEAB5974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0107BFCC-4427-498B-AFE6-3B61CEAB5974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0107BFCC-4427-498B-AFE6-3B61CEAB5974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0107BFCC-4427-498B-AFE6-3B61CEAB5974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{959BB254-EA6A-4C89-BC3C-AA0DBA75B4F6} = {43618B94-1621-4535-B4BF-A6C8045EA2F4}
 		{B773BA7F-2253-49CC-AD2C-549F2DAAF142} = {65D9D685-94D2-4090-A67D-638AB0B0E41E}
 		{E77B7779-B001-4CAD-8BB3-33E7EA5E7405} = {B773BA7F-2253-49CC-AD2C-549F2DAAF142}
+		{0107BFCC-4427-498B-AFE6-3B61CEAB5974} = {B773BA7F-2253-49CC-AD2C-549F2DAAF142}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1091D38-1C8E-4943-B142-2773CAADBF2A}

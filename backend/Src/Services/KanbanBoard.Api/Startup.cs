@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using KanbanBoard.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using KanbanBoard.Services.Goals.Api.Filters;
+using KanbanBoard.Services.Goals.Api.Extensions;
+using KanbanBoard.BuildingBlocks.EventBus.Settings.Abstractions;
 
 namespace KanbanBoard.Services.Goals.Api
 {
@@ -21,12 +22,13 @@ namespace KanbanBoard.Services.Goals.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRabbit(Configuration);
+            //services.AddRabbit(Configuration);
             services.RegisterCustomServices(Configuration);
             services.RegisterCustomRepositories();
             services.RegisterMappingProfiles();
-            
-            
+
+            services.RegisterRabbitMQEventBus(Configuration);
+
 
             services.AddCors();
 
@@ -39,6 +41,13 @@ namespace KanbanBoard.Services.Goals.Api
             services.ConfigureCustomValidationErrors();
 
             services.ConfigureJwt(Configuration);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+            //eventBus.Subscribe<CreatedGoalIntegrationEvent, CreatedGoalIntegrationEventHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +74,7 @@ namespace KanbanBoard.Services.Goals.Api
             {
                 endpoints.MapControllers();
             });
+            ConfigureEventBus(app);
         }
     }
 }

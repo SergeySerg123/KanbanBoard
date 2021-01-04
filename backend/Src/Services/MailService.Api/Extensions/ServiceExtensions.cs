@@ -1,22 +1,64 @@
-﻿using KanbanBoard.BuildingBlocks.EventBus.RabbitMQEventBus;
+﻿using Autofac;
+using KanbanBoard.BuildingBlocks.EventBus.RabbitMQEventBus;
+using KanbanBoard.BuildingBlocks.EventBus.Settings;
+using KanbanBoard.BuildingBlocks.EventBus.Settings.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
 namespace KanbanBoard.Services.MailService.Api.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void AddRabbit(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterRabbitMQEventBus(this IServiceCollection services, IConfiguration Configuration)
         {
-            var rabbitConfig = configuration.GetSection("rabbit");
-            services.Configure<RabbitOptions>(rabbitConfig);
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
-            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-            services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = Configuration["EventBusConnection"],
+                    DispatchConsumersAsync = true
+                };
 
-            services.AddSingleton<IRabbitManager, RabbitManager>();
+                if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                {
+                    factory.UserName = Configuration["EventBusUserName"];
+                }
+
+                if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                {
+                    factory.Password = Configuration["EventBusPassword"];
+                }
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                {
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
+
+                return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+            });
+
+            var subscriptionClientName = Configuration["SubscriptionClientName"];
+
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                var retryCount = 5;
+                if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                {
+                    retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                }
+
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+            });
         }
     }
 }
