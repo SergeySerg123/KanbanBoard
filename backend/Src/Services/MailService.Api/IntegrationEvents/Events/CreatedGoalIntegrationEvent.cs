@@ -1,5 +1,4 @@
-﻿using EventBus.Base.Standard;
-
+﻿using KanbanBoard.BuildingBlocks.EventBus.Settings.Events;
 
 namespace KanbanBoard.Services.MailService.Api.IntegrationEvents.Events
 {

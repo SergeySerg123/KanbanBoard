@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>KanbanBoard.Services.MailService.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\EventBus\RabbitMQEventBus\RabbitMQEventBus.csproj" />
   </ItemGroup>
 
 
