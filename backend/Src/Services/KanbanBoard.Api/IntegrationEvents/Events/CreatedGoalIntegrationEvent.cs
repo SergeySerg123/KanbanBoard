@@ -1,4 +1,5 @@
-﻿using KanbanBoard.BuildingBlocks.EventBus.Settings.Events;
+﻿
+using KanbanBoard.BuildingBlocks.EventBus.Settings.Events;
 
 namespace KanbanBoard.Services.Goals.Api.IntegrationEvents.Events
 {

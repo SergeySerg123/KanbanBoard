@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using EventBus.Base.Standard;
 using KanbanBoard.Services.Goals.Api.DTO;
 using KanbanBoard.Services.Goals.Api.Interfaces;
 using KanbanBoard.Services.Goals.Api.Models;
 using KanbanBoard.Services.Goals.Api.IntegrationEvents.Events;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using KanbanBoard.BuildingBlocks.EventBus.Settings.Abstractions;
 
 namespace KanbanBoard.Services.Goals.Api.Services
 {

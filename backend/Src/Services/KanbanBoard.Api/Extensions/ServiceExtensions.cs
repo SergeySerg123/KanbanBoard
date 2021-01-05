@@ -43,6 +43,7 @@ namespace KanbanBoard.Services.Goals.Api.Extensions
 
         public static void RegisterCustomRepositories(this IServiceCollection services)
         {
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddTransient<IGoalsRepository, GoalsRepository>();
         }
 
@@ -64,6 +65,8 @@ namespace KanbanBoard.Services.Goals.Api.Extensions
                 var factory = new ConnectionFactory()
                 {
                     HostName = Configuration["EventBusConnection"],
+                    VirtualHost = Configuration["EventBusVirtualHostName"],
+                    Port = Int32.Parse(Configuration["EventBusPort"]),
                     DispatchConsumersAsync = true
                 };
 
