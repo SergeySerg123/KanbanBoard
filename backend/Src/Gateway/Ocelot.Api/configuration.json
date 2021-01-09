@@ -1,0 +1,17 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/goals",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7000
+        }
+      ],
+      "UpstreamPathTemplate": "/goals",
+      "UpstreamHttpMethod": [ "Put", "Delete", "Get", "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {}
+}
